@@ -101,22 +101,10 @@ def signal_handler(signal, frame):
             continue
 
 
-# 取有效位数
-class keep_digits:
-    def  p(num, n = 4):
-        print(f"{num:.{n}g}")
-        return
-    
-    def  r(num, n = 4):
-        return f"{num:.{n}g}"
-    
-
 # 数据处理
 def data_analysis():
     global nums
     nums = []
-    sum_nums = 0
-    sum_squares = 0
 
     # data_analysis() 中注册信号处理方法，为ctrl+c处理办法
     # signal.signal(signal.SIGINT, functools.partial(signal_handler))
@@ -133,7 +121,6 @@ def data_analysis():
                 continue
 
             nums.append(num)
-            sum_nums += num
 
         except KeyboardInterrupt:
             print("检测到中断，输入已保存")
@@ -161,7 +148,7 @@ def data_analysis():
     print(f"绝对偏差di:   {[f'{d:.4g}' for d in abs_deviations]}")
     print(f"平均偏差:     {avg_abs_deviation:.4g}")
     print(f"相对平均偏差: {rel_avg_abs_deviation:.2g} %")
-    if sum_nums == 0:
+    if np.sum(nums) == 0:
         print("标准偏差:     和为0, 无法计算")
         print("相对标准偏差: 和为0, 无法计算")
         print("方差:         和为0, 无法计算")
@@ -175,7 +162,7 @@ def data_analysis():
 
 
     while True:
-        if sum_nums == 0:
+        if np.sum(nums) == 0:
             print("置信区间:     和为0, 无法计算")
             break
 
