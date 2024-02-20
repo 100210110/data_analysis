@@ -10,7 +10,7 @@ missing_libraries = []
 
 
 
-# 分割线
+# 分割线，可以直接打印直线或返回值
 class line:
     # 直接打印
     def p(length):
@@ -20,7 +20,6 @@ class line:
     def r(length):
         return '-' * length
 
-
 # 确认库是否安装
 def is_library_installed(library_name):
     try:
@@ -29,14 +28,12 @@ def is_library_installed(library_name):
     except ImportError:
         return False
 
-
 # 检查tqdm进度条库并且安装
 def test_tqmd():
     if not is_library_installed('tqdm'):
         print("tqdm进度条未安装, 正在尝试使用pip安装...")
         command = 'pip install -i https://pypi.tuna.tsinghua.edu.cn/simple tqdm'
         subprocess.call(command, shell=True)
-
 
 # 检查所有库是否安装, 并且把未安装库添加到missing_libraries列表中
 def test_library():
@@ -47,7 +44,6 @@ def test_library():
             print(f"{library} 库未安装")
         else:
             print(f"{library} 库已经安装")
-
 
 # 安装缺失库
 def install_missing_lirary():
@@ -80,6 +76,7 @@ import numpy as np
 from decimal import Decimal as D
 from scipy.stats import t
 import functools
+import mpmath as mp
 
 
 
@@ -135,10 +132,15 @@ def data_analysis():
         print("一个数字可不能拿来分析, 再整几个来")
         return
 
+
+    # 平均值
     mean = np.mean(nums)
+    # 绝对偏差，是多个值
     abs_deviations = np.abs(np.array(nums) - D(f"{mean:.4g}"))
+    # 平均绝对偏差
     avg_abs_deviation = np.mean(abs_deviations)
-    rel_std_dev, variance, std_dev = None, None, None
+    # 标准偏差、总体标准偏差、相对标准偏差、方差，在和为 0 的情况下无意义
+    rel_std_dev, pop_std_dev, variance, std_dev = None, None, None, None
     if mean == 0:
         rel_avg_abs_deviation = 0 if avg_abs_deviation == 0 else float("inf")
     else:
@@ -150,13 +152,20 @@ def data_analysis():
     print(f"相对平均偏差: {rel_avg_abs_deviation:.2g} %")
     if np.sum(nums) == 0:
         print("标准偏差:     和为0, 无法计算")
+        print("总体标准偏差: 和为0, 无法计算")
         print("相对标准偏差: 和为0, 无法计算")
         print("方差:         和为0, 无法计算")
     else:
-        std_dev = np.std(nums)
+        # 计算标准偏差，ddof = 1 代表除以n - 1
+        std_dev = np.std(nums, ddof=1)
+        # 总体标准偏差，直接除以n
+        pop_std_dev = np.std(nums, ddof=0)
+        # 计算相对标准偏差，标准偏差除以平均数后带百分比
         rel_std_dev = std_dev / mean * 100
+        # 方差
         variance = np.var(nums)
         print(f"标准偏差:     {std_dev:.4g}")
+        print(f"总体标准偏差: {pop_std_dev:.4g} %")
         print(f"相对标准偏差: {rel_std_dev:.4g} %")
         print(f"方差:         {variance:.4g}")
 
@@ -198,13 +207,13 @@ def thanks():
         choice = input("是否继续？按'Y'感谢, 其他键退出。")
         if choice.upper() not in ['Y', 'YES']:
             print("期待您的下次使用！")
-            return 0
+            return 0 # 返回 0 后程序结束
         else:
             line.p(50)
             print(' '*15 + '感谢您的认可!O(∩_∩)O')
             line.p(50)
             print()
-            return 1
+            return 1 # 返回 1 后继续执行
     elif count == -1:
         return 1
     else:
@@ -212,6 +221,7 @@ def thanks():
         return 1
 
 
+# 主函数
 if __name__ == '__main__':
     a = 1
     count = -1

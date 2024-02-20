@@ -20,8 +20,6 @@ class line:
     def r(length):
         return '-' * length
 
-    
-
 
 # 确认库是否安装
 def is_library_installed(library_name):
@@ -107,6 +105,16 @@ def signal_handler(signal, frame):
             continue
 
 
+# 取有效位数
+class keep_digits:
+    def  p(num, n = 4):
+        print(f"{num:.{n}g}")
+        return
+    
+    def  r(num, n = 4):
+        return f"{num:.{n}g}"
+    
+
 # 数据处理
 def data_analysis():
     global nums
@@ -154,10 +162,10 @@ def data_analysis():
     else:
         rel_avg_abs_deviation = avg_abs_deviation / mean * 100
     line.p(20)
-    print(f"平均数:       {mean:.4f}")
-    print(f"绝对偏差di:   {[f'{d:.4f}' for d in abs_deviations]}")
-    print(f"平均偏差:     {avg_abs_deviation:.4f}")
-    print(f"相对平均偏差: {rel_avg_abs_deviation:.4f} %")
+    print(f"平均数:       {mean:.4g}")
+    print(f"绝对偏差di:   {[f'{d:.4g}' for d in abs_deviations]}")
+    print(f"平均偏差:     {avg_abs_deviation:.4g}")
+    print(f"相对平均偏差: {rel_avg_abs_deviation:.2g} %")
     if sum_nums == 0:
         print("标准偏差:     和为0, 无法计算")
         print("相对标准偏差: 和为0, 无法计算")
@@ -166,9 +174,9 @@ def data_analysis():
         rel_std_dev = np.std(nums, ddof=1) / mean * 100
         variance = (sum_squares - sum_nums ** 2 / D(n)) / (n - 1)
         std_dev = np.std(nums, ddof=1)
-        print(f"标准偏差:     {std_dev:.4f}")
-        print(f"相对标准偏差: {rel_std_dev:.4f} %")
-        print(f"方差:         {variance:.4f}")
+        print(f"标准偏差:     {std_dev:.4g}")
+        print(f"相对标准偏差: {rel_std_dev:.4g} %")
+        print(f"方差:         {variance:.4g}")
 
     while True:
         if sum_nums == 0:
@@ -191,7 +199,7 @@ def data_analysis():
         t_value = t.ppf((conf_level/100 + 1)/2, n-1)
         lower_ci = mean - D(t_value) * std_dev / D(n).sqrt()
         upper_ci = mean + D(t_value) * std_dev / D(n).sqrt()
-        print(f"{conf_level}% 置信区间:[{lower_ci:.4f}, {upper_ci:.4f}]")
+        print(f"{conf_level}% 置信区间:[{lower_ci:.4g}, {upper_ci:.4g}]")
         break
 
     line.p(20)
@@ -199,7 +207,7 @@ def data_analysis():
 
 
 if __name__ == '__main__':
-    count = 0
+    count = -1
     while True:
         data_analysis()
         input("按任意键继续...")
@@ -217,6 +225,8 @@ if __name__ == '__main__':
                 print(' '*15 + '感谢您的支持!O(∩_∩)O')
                 line.p(50)
                 print()
+        elif count == -1:
+            continue
         else:
             print(f"{line.r(20)}\n\n{line.r(20)}")
 
