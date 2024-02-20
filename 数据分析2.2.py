@@ -18,7 +18,7 @@ class line:
     
     # 返回值
     def r(length):
-        return '-' * length
+        return '-' * length 
 
 
 # 确认库是否安装

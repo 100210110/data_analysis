@@ -19,7 +19,7 @@ while True :
     list2 = []      #|di|           存放绝对偏差的绝对值
     list3 = []      #di             存放绝对偏差
 
-    for i in range(times):
+    for i in range(times): 
         x = i + 1
         print("请输入数据", x, "：", end = "")
         data = input()              #数据输入

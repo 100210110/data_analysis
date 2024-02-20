@@ -13,7 +13,7 @@ def is_library_installed(library_name):
     except ImportError:
         return False
 
-if not is_library_installed('tqdm'):
+if not is_library_installed('tqdm'): 
     print("tqdm未安装，正在尝试使用pip安装...")
     command = 'pip install tqdm'
     subprocess.call(command, shell=True)
