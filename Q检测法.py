@@ -1,5 +1,7 @@
 from decimal import Decimal as D
 
+# 仅能判断一个离群值是否舍弃
+
 while True:
     num_list = []
     x = input("请输入Q检测法待测值: ")
